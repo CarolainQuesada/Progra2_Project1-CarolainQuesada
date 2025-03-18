@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.URL?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="AnchorPane" prefHeight="500.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.Primary1Controller">
+    <stylesheets>
+        <URL value="@/styles/primary1.css" />
+    </stylesheets>
+   <children>
+      <ImageView fitHeight="809.0" fitWidth="804.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../imagenes/Rendering%20(AI).jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="btnStartGamen" layoutX="311.0" layoutY="566.0" mnemonicParsing="false" onAction="#clickChangeToLobby" prefHeight="38.0" prefWidth="161.0" text="Start Game">
+         <font>
+            <Font name="Bernard MT Condensed" size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="primaryButton" layoutX="337.0" layoutY="623.0" onAction="#switchToSecondary" prefHeight="38.0" prefWidth="109.0" text="Info" textFill="#4e3c3c">
+         <font>
+            <Font name="Bernard MT Condensed" size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="186.0" prefHeight="60.0" prefWidth="452.0" style="-fx-background-color: B0C4DE;" text="          BATTLESHIP" textAlignment="RIGHT">
+         <font>
+            <Font name="Bernard MT Condensed" size="48.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

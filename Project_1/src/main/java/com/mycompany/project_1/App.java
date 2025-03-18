@@ -1,4 +1,5 @@
-package com.mycompany.project_1.carolainquesada;
+
+package com.mycompany.project_1;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -17,12 +18,12 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("primary"), 640, 480);
+        scene = new Scene(loadFXML("primary1"), 800, 700);
         stage.setScene(scene);
         stage.show();
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
