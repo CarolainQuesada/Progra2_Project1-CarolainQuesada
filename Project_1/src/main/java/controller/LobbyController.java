@@ -12,6 +12,8 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -26,9 +28,17 @@ public class LobbyController implements Initializable {
     @FXML
     private ToggleGroup dificultad;
     @FXML
-    private Button btnComeBack2;
-    @FXML
     private Button btnPlay;
+    @FXML
+    private RadioButton rbHard;
+    @FXML
+    private RadioButton rbMedium;
+    @FXML
+    private RadioButton rbEasy;
+    @FXML
+    private TextField txtName;
+    @FXML
+    private Button btnBack;
 
     /**
      * Initializes the controller class.

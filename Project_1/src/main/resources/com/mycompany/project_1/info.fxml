@@ -7,39 +7,44 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane id="AnchorPane" prefHeight="392.0" prefWidth="636.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InfoController">
+<AnchorPane id="AnchorPane" prefHeight="695.0" prefWidth="800.0" styleClass="mainFxmlClass" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.InfoController">
    <children>
-      <ImageView fitHeight="500.0" fitWidth="820.0" layoutX="-6.0" layoutY="-16.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fitHeight="723.0" fitWidth="800.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="@../../../imagenes/descarga%20(3).jpg" />
+            <Image url="@../../../imagenes/info.png" />
          </image>
       </ImageView>
-      <Label layoutX="14.0" layoutY="30.0" prefHeight="26.0" prefWidth="222.0" style="-fx-background-color: B0C4DE;" text="     Información Personal: ">
+      <Label layoutX="25.0" layoutY="32.0" prefHeight="26.0" prefWidth="222.0" style="-fx-background-color: B0C4DE;" text="     Información : ">
          <font>
             <Font name="Bernard MT Condensed" size="17.0" />
          </font></Label>
-      <Label layoutX="409.0" layoutY="119.0" prefHeight="26.0" prefWidth="178.0" text="Carolain Queasada Soto">
+      <Label layoutX="409.0" layoutY="70.0" prefHeight="26.0" prefWidth="302.0" text="Creado por: Carolain Queasada Soto">
          <font>
             <Font name="Bernard MT Condensed" size="17.0" />
          </font></Label>
-      <Label layoutX="409.0" layoutY="155.0" prefHeight="26.0" prefWidth="127.0" text="Ciclo: I 2025">
+      <Label layoutX="409.0" layoutY="117.0" prefHeight="26.0" prefWidth="127.0" text="Ciclo: I 2025">
          <font>
             <Font name="Bernard MT Condensed" size="17.0" />
          </font></Label>
-      <Button fx:id="btnComeBack" layoutX="42.0" layoutY="354.0" mnemonicParsing="false" onAction="#changeToPrimary" text="Regresar" />
-      <Label layoutX="409.0" layoutY="198.0" text="Programación II">
+      <Button fx:id="btnBack" layoutX="36.0" layoutY="604.0" mnemonicParsing="false" onAction="#changeToPrimary" prefHeight="46.0" prefWidth="76.0" text="Regresar" />
+      <Label layoutX="409.0" layoutY="176.0" text="Programación II">
          <font>
             <Font name="Bernard MT Condensed" size="17.0" />
          </font></Label>
-      <ImageView fitHeight="196.0" fitWidth="150.0" layoutX="25.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true">
-         <image>
-            <Image url="@../../../imagenes/WhatsApp%20Image%202025-03-15%20at%201.43.10%20AM.jpeg" />
-         </image>
-      </ImageView>
-      <Label layoutX="413.0" layoutY="282.0" text="Descripción del juego :">
+      <Label layoutX="409.0" layoutY="248.0" text="Descripción del juego :">
          <font>
             <Font name="Bernard MT Condensed" size="17.0" />
          </font>
       </Label>
+      <Label layoutX="403.0" layoutY="308.0" prefHeight="172.0" prefWidth="310.0" text="Batalla Naval es un emocionante juego de estrategia basado en el clásico juego de mesa. Dos jugadores se enfrentan en un combate naval, colocando estratégicamente sus barcos en un tablero y tratando de hundir la flota enemiga antes de que la suya sea destruida." wrapText="true">
+         <font>
+            <Font name="Bernard MT Condensed" size="17.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="264.0" fitWidth="275.0" layoutX="36.0" layoutY="116.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../imagenes/barcoInfo.png" />
+         </image>
+      </ImageView>
    </children>
 </AnchorPane>

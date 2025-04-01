@@ -23,9 +23,9 @@ public class Primary1Controller implements Initializable {
 
 
     @FXML
-    private Button primaryButton;
-    @FXML
     private Button btnStartGamen;
+    @FXML
+    private Button btnInfo;
     /**
      * Initializes the controller class.
      */
@@ -33,17 +33,15 @@ public class Primary1Controller implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
     }    
-    
-    @FXML
-    private void switchToSecondary(ActionEvent event) throws IOException {
-        App.setRoot("info");
-    }
-
-  
 
     @FXML
     private void clickChangeToLobby(ActionEvent event) throws IOException {
         App.setRoot("lobby");
+    }
+
+    @FXML
+    private void switchToInfo(ActionEvent event) throws IOException {
+        App.setRoot("info");
     }
 
 }

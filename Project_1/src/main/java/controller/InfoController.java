@@ -22,7 +22,7 @@ public class InfoController implements Initializable {
 
 
     @FXML
-    private Button btnComeBack;
+    private Button btnBack;
     /**
      * Initializes the controller class.
      */
