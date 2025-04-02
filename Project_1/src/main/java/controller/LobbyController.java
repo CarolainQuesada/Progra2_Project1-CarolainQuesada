@@ -17,6 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import model.GameDifficulty;
 
 /**
  * FXML Controller class
@@ -54,9 +55,18 @@ public class LobbyController implements Initializable {
     }
 
     @FXML
-    private void changeToBoard(ActionEvent event)throws IOException {
-        App.setRoot("board1");
+private void changeToBoard(ActionEvent event) throws IOException {
+    if (rbEasy.isSelected()) {
+        Board1Controller.setDifficulty(GameDifficulty.EASY);
+    } else if (rbMedium.isSelected()) {
+        Board1Controller.setDifficulty(GameDifficulty.MEDIUM);
+    } else if (rbHard.isSelected()) {
+        Board1Controller.setDifficulty(GameDifficulty.HARD);
     }
+
+    App.setRoot("board1");
+}
+
 }
 
    
