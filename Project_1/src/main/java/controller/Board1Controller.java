@@ -20,24 +20,23 @@ public class Board1Controller implements Initializable {
     private Label lblTimer;
 
     private Timeline timeline;
-    private int timeRemaining; // Tiempo en segundos
-
-    private static GameDifficulty difficulty; // Se establece desde LobbyController
+    private int timeRemaining; 
+    
+    private static GameDifficulty difficulty; 
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        if (difficulty != GameDifficulty.EASY) { // Solo iniciar el temporizador si no es fácil
+        if (difficulty != GameDifficulty.EASY) { 
             startTimer();
         } else {
-            lblTimer.setText("∞"); // Mostrar infinito en fácil
+            lblTimer.setText("00"); 
         }
     }
-
     public void startTimer() {
         if (difficulty == GameDifficulty.MEDIUM) {
-            timeRemaining = 120; // 2 minutos
+            timeRemaining = 120; 
         } else if (difficulty == GameDifficulty.HARD) {
-            timeRemaining = 60; // 1 minuto
+            timeRemaining = 60; 
         }
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -46,15 +45,13 @@ public class Board1Controller implements Initializable {
 
             if (timeRemaining <= 0) {
                 timeline.stop();
-                lblTimer.setText("Time's up!");
-                // Aquí puedes añadir lógica para finalizar el juego
+                lblTimer.setText("Se acabó el tiempo!!!");
+               
             }
         }));
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
     }
-
-    // Método para recibir la dificultad desde LobbyController
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
     }
