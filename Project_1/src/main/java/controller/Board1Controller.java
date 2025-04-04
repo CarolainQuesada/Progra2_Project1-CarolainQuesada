@@ -42,7 +42,7 @@ public class Board1Controller implements Initializable {
     private int timeRemaining;
     private static GameDifficulty difficulty;
 
-    private boolean[][] occupiedCells = new boolean[10][10]; // Matriz de ocupación
+    private boolean[][] occupiedCells = new boolean[10][10]; 
     
     @Override
     public void initialize(URL url, ResourceBundle rb) {
@@ -52,7 +52,7 @@ public class Board1Controller implements Initializable {
             lblTimer.setText("00");
         }
 
-        setupDragAndDrop(); // Activar arrastrar y soltar
+        setupDragAndDrop(); 
     }
 
     public void startTimer() {
@@ -76,6 +76,56 @@ public class Board1Controller implements Initializable {
 
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
+    }
+
+    private void setupDragAndDrop() {
+        
+        setupDragEvents(acorazado, 4);
+        setupDragEvents(crucero1, 3);
+        setupDragEvents(crucero2, 3);
+        setupDragEvents(destructor1, 2);
+        setupDragEvents(destructor2, 2);
+        setupDragEvents(destructor3, 2);
+        setupDragEvents(submarino1, 1);
+        setupDragEvents(submarino2, 1);
+        setupDragEvents(submarino3, 1);
+        setupDragEvents(submarino4, 1);
+
+        gridPanePlayer.setOnDragOver(event -> {
+            if (event.getGestureSource() instanceof ImageView && event.getDragboard().hasImage()) {
+                event.acceptTransferModes(TransferMode.MOVE);
+            }
+            event.consume();
+        });
+
+        gridPanePlayer.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            if (db.hasImage()) {
+                ImageView draggedShip = (ImageView) event.getGestureSource();
+                int col = (int) (event.getX() / (gridPanePlayer.getWidth() / 10));
+                int row = (int) (event.getY() / (gridPanePlayer.getHeight() / 10));
+                int shipSize = getShipSize(draggedShip);
+
+                if (col + shipSize > 10 || isOccupied(row, col, shipSize)) {
+                    event.setDropCompleted(false);
+                    return;
+                }
+                markOccupied(row, col, shipSize, true);
+                
+                GridPane.setColumnIndex(draggedShip, col);
+                GridPane.setRowIndex(draggedShip, row);
+                GridPane.setColumnSpan(draggedShip, shipSize);
+                GridPane.setRowSpan(draggedShip, 1);
+                draggedShip.setRotate(0); 
+                if (!gridPanePlayer.getChildren().contains(draggedShip)) {
+                    gridPanePlayer.getChildren().add(draggedShip);
+                }
+                event.setDropCompleted(true);
+            } else {
+                event.setDropCompleted(false);
+            }
+            event.consume();
+        });
     }
 
     private void setupDragEvents(ImageView ship, int size) {
