@@ -8,6 +8,6 @@ package model;
  *
  * @author Usuario
  */
-public class Computer {
+public class Enemy {
     
 }
