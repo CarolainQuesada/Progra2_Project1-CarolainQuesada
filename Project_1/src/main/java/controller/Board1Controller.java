@@ -43,9 +43,7 @@ public class Board1Controller implements Initializable {
     private static GameDifficulty difficulty;
 
     private boolean[][] occupiedCells = new boolean[10][10]; // Matriz de ocupación
-    // Eliminar la variable isVertical ya que no necesitamos orientación vertical
-    // private boolean isVertical = false;
-
+    
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         if (difficulty != GameDifficulty.EASY) {
@@ -80,80 +78,7 @@ public class Board1Controller implements Initializable {
         difficulty = selectedDifficulty;
     }
 
-    private void setupDragAndDrop() {
-        
-        setupDragEvents(acorazado, 4);
-        setupDragEvents(crucero1, 3);
-        setupDragEvents(crucero2, 3);
-        setupDragEvents(destructor1, 2);
-        setupDragEvents(destructor2, 2);
-        setupDragEvents(destructor3, 2);
-        setupDragEvents(submarino1, 1);
-        setupDragEvents(submarino2, 1);
-        setupDragEvents(submarino3, 1);
-        setupDragEvents(submarino4, 1);
-
-        gridPanePlayer.setOnDragOver(event -> {
-            if (event.getGestureSource() instanceof ImageView && event.getDragboard().hasImage()) {
-                event.acceptTransferModes(TransferMode.MOVE);
-            }
-            event.consume();
-        });
-
-        gridPanePlayer.setOnDragDropped(event -> {
-            Dragboard db = event.getDragboard();
-            if (db.hasImage()) {
-                ImageView draggedShip = (ImageView) event.getGestureSource();
-                int col = (int) (event.getX() / (gridPanePlayer.getWidth() / 10));
-                int row = (int) (event.getY() / (gridPanePlayer.getHeight() / 10));
-                int shipSize = getShipSize(draggedShip);
-
-                // Verificar fuera de límites y ocupación (solo para horizontal)
-                if (col + shipSize > 10 || isOccupied(row, col, shipSize)) {
-                    event.setDropCompleted(false);
-                    return;
-                }
-
-                // Marcar celdas ocupadas
-                markOccupied(row, col, shipSize, true);
-
-                // Posicionar el barco (solo horizontal)
-                GridPane.setColumnIndex(draggedShip, col);
-                GridPane.setRowIndex(draggedShip, row);
-                GridPane.setColumnSpan(draggedShip, shipSize);
-                GridPane.setRowSpan(draggedShip, 1);
-                draggedShip.setRotate(0); // Siempre horizontal, sin rotación
-
-                if (!gridPanePlayer.getChildren().contains(draggedShip)) {
-                    gridPanePlayer.getChildren().add(draggedShip);
-                }
-
-                event.setDropCompleted(true);
-            } else {
-                event.setDropCompleted(false);
-            }
-            event.consume();
-        });
-    }
-
-    private void setupDragEvents(ImageView ship, int size) {
-        ship.setOnDragDetected(event -> {
-            Dragboard db = ship.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            content.putImage(ship.getImage());
-            db.setContent(content);
-            ship.setVisible(false);
-            event.consume();
-        });
-
-        ship.setOnDragDone(event -> {
-            ship.setVisible(true);
-            event.consume();
-        });
-    }
-
     private boolean isOccupied(int row, int col, int size) {
-        // Solo se verifica la ocupación horizontal
         for (int i = 0; i < size; i++) {
             int c = col + i;
             if (c >= 10 || occupiedCells[row][c]) return true;
@@ -162,7 +87,6 @@ public class Board1Controller implements Initializable {
     }
 
     private void markOccupied(int row, int col, int size, boolean status) {
-        // Marcar celdas ocupadas horizontalmente
         for (int i = 0; i < size; i++) {
             int c = col + i;
             if (c < 10) occupiedCells[row][c] = status;
