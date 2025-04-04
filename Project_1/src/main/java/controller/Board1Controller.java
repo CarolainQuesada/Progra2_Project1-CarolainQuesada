@@ -78,6 +78,22 @@ public class Board1Controller implements Initializable {
         difficulty = selectedDifficulty;
     }
 
+    private void setupDragEvents(ImageView ship, int size) {
+        ship.setOnDragDetected(event -> {
+            Dragboard db = ship.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            content.putImage(ship.getImage());
+            db.setContent(content);
+            ship.setVisible(false);
+            event.consume();
+        });
+
+        ship.setOnDragDone(event -> {
+            ship.setVisible(true);
+            event.consume();
+        });
+    }
+
     private boolean isOccupied(int row, int col, int size) {
         for (int i = 0; i < size; i++) {
             int c = col + i;
