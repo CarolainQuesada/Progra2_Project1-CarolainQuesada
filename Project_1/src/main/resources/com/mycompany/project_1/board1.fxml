@@ -287,9 +287,12 @@
                         <Button mnemonicParsing="false" prefHeight="45.0" prefWidth="42.0" text="Button" GridPane.columnIndex="9" GridPane.rowIndex="9" />
                      </children>
                   </GridPane>
-                  <Label layoutX="173.0" layoutY="23.0" text="JUGADOR 1" />
-                  <Label layoutX="595.0" layoutY="23.0" text="JUGADOR 2" />
-                  <Label fx:id="lblTimer" layoutX="344.0" layoutY="13.0" prefHeight="37.0" prefWidth="131.0" text="60 s" />
+                  <Label fx:id="lblPlayer1" layoutX="171.0" layoutY="5.0" text="JUGADOR 1" />
+                  <Label fx:id="lblPlayer2" layoutX="591.0" layoutY="5.0" text="JUGADOR 2" />
+                  <Label fx:id="lblTimer" layoutX="385.0" layoutY="23.0" prefHeight="26.0" prefWidth="37.0" text="60 s" />
+                  <Label fx:id="lblIndication" layoutX="344.0" layoutY="5.0" text="Tiempo de la partida" />
+                  <Label fx:id="lblTurnTimer" layoutX="388.0" layoutY="441.0" text="15 s" />
+                  <Label fx:id="lblIndication2" layoutX="362.0" layoutY="423.0" text="Tiempo por tiro" />
                </children>
             </AnchorPane>
          </items>

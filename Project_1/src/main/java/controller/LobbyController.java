@@ -44,6 +44,8 @@ public class LobbyController implements Initializable {
     /**
      * Initializes the controller class.
      */
+    public static String playerName;
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
@@ -56,6 +58,8 @@ public class LobbyController implements Initializable {
 
     @FXML
 private void changeToBoard(ActionEvent event) throws IOException {
+            playerName = txtName.getText();
+
     if (rbEasy.isSelected()) {
         Board1Controller.setDifficulty(GameDifficulty.EASY);
     } else if (rbMedium.isSelected()) {
