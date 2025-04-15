@@ -177,14 +177,21 @@ private void handleDragDropped(DragEvent event) {
 private void startDrag(MouseEvent event, ImageView ship) {
     Dragboard db = ship.startDragAndDrop(TransferMode.MOVE);
     ClipboardContent content = new ClipboardContent();
-    content.putImage(ship.getImage());
+    
+    WritableImage snapshot = new WritableImage( //con esto puedo mejorar el tema del zoom, captura la imagen del tamaño exacto
+        (int)ship.getBoundsInLocal().getWidth(),
+        (int)ship.getBoundsInLocal().getHeight()
+    );
+    ship.snapshot(null, snapshot);
+    
+    content.putImage(snapshot);
     db.setContent(content);
-    ship.setOpacity(0.5); // Cambia a semi-transparencia
+    ship.setOpacity(0.5);
     event.consume();
 }
 
 private void endDrag(DragEvent event, ImageView ship) {
-    ship.setOpacity(1.0); // Restaura opacidad
+    ship.setOpacity(1.0); 
     event.consume();
 }
 // Calcula la columna donde se soltó el barco
