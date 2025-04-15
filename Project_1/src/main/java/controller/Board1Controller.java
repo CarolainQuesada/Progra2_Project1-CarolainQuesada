@@ -179,15 +179,14 @@ private void startDrag(MouseEvent event, ImageView ship) {
     ClipboardContent content = new ClipboardContent();
     content.putImage(ship.getImage());
     db.setContent(content);
-    ship.setVisible(false); // Oculta el original
+    ship.setOpacity(0.5); // Cambia a semi-transparencia
     event.consume();
 }
 
 private void endDrag(DragEvent event, ImageView ship) {
-    ship.setVisible(true); // Restaura visibilidad
+    ship.setOpacity(1.0); // Restaura opacidad
     event.consume();
 }
-
 // Calcula la columna donde se soltó el barco
 private int calculateColumn(DragEvent event) {
     double cellWidth = gridPanePlayer.getWidth() / 10;
