@@ -17,6 +17,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
+import javafx.scene.image.WritableImage;
 
 public class Board1Controller implements Initializable {
 
@@ -178,13 +179,12 @@ private void startDrag(MouseEvent event, ImageView ship) {
     ClipboardContent content = new ClipboardContent();
     content.putImage(ship.getImage());
     db.setContent(content);
-    ship.setVisible(false); 
+    ship.setVisible(false); // Oculta el original
     event.consume();
 }
 
-// Finaliza el arrastre del barco
 private void endDrag(DragEvent event, ImageView ship) {
-    ship.setVisible(true);
+    ship.setVisible(true); // Restaura visibilidad
     event.consume();
 }
 
