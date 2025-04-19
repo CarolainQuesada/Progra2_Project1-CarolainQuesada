@@ -185,6 +185,19 @@ private void placeEnemyShip(ImageView ship, int size, boolean vertical) {
         }
     }
 }
+@FXML
+private void toggleEnemyShipsVisibility() {
+    enemyShipsVisible = !enemyShipsVisible;
+    updateEnemyShipVisibility();
+    btnToggleEnemyShips.setText(enemyShipsVisible ? "Ocultar barcos" : "Mostrar barcos");
+}
+
+private void updateEnemyShipVisibility() {
+    if (enemyShips == null) return;
+    for (ImageView ship : enemyShips) {
+        ship.setVisible(enemyShipsVisible);
+    }
+}
 
  private void setupDragAndDrop() {
     setupShipDragEvents(acorazado, 4);
