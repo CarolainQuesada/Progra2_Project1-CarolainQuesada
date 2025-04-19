@@ -22,55 +22,115 @@ import javafx.scene.image.WritableImage;
 
 public class Board1Controller implements Initializable {
 
-    @FXML private Label lblTimer;
-    @FXML private GridPane gridPanePlayer;
-    @FXML private GridPane gridPaneEnemy;
+    @FXML 
+    private Label lblTimer;
+    @FXML 
+    private GridPane gridPanePlayer;
+    @FXML 
+    private GridPane gridPaneEnemy;
 
-    @FXML private ImageView acorazado;
-    @FXML private ImageView crucero1, crucero2;
-    @FXML private ImageView destructor1, destructor2, destructor3;
-    @FXML private ImageView submarino1, submarino2, submarino3, submarino4;
+    @FXML 
+    private ImageView acorazado;
+    @FXML 
+    private ImageView crucero1, crucero2;
+    @FXML 
+    private ImageView destructor1, destructor2, destructor3;
+    @FXML 
+    private ImageView submarino1, submarino2, submarino3, submarino4;
+    @FXML
+    private Label lblPlayer1;
+    @FXML
+    private Label lblPlayer2;
+    @FXML
+    private Label lblIndication;
+    @FXML
+    private Label lblTurnTimer;
+    @FXML
+    private Label lblIndication2;
+    @FXML
+    private Button btnToggleEnemyShips;
 
-    @FXML private Label lblPlayer1;
-    @FXML private Label lblPlayer2;
-    @FXML private Label lblIndication;
-    @FXML private Label lblTurnTimer;
-    @FXML private Label lblIndication2;
-    @FXML private Button btnToggleEnemyShips;
-    @FXML private Button btnReady;
-
-    @FXML private ImageView acorazado11;
-    @FXML private ImageView crucero11, crucero22;
-    @FXML private ImageView destructor11, destructor22, destructor33;
-    @FXML private ImageView submarino11, submarino22, submarino33, submarino44;
-
+    
+    @FXML
+    private ImageView acorazado11;
+    @FXML
+    private ImageView crucero11;
+    @FXML
+    private ImageView submarino11;
+    @FXML
+    private ImageView destructor11;
+    @FXML
+    private ImageView crucero22;
+    @FXML
+    private ImageView destructor22;
+    @FXML
+    private ImageView destructor33;
+    @FXML
+    private ImageView submarino22;
+    @FXML
+    private ImageView submarino33;
+    @FXML
+    private ImageView submarino44;
+    @FXML
+    private Button btnReady;
+    
+    //variables
     private Timeline timeline;
     private int timeRemaining;
     private static GameDifficulty difficulty;
     private Timeline turnTimer;
     private int turnTimeRemaining;
     private boolean[][] occupiedCells = new boolean[10][10];
-    private boolean[][] enemyOccupiedCells = new boolean[10][10];
-    private boolean shipsPlaced = false;
     private boolean enemyShipsVisible = false;
     private ImageView[] enemyShips;
+    private boolean[][] enemyOccupiedCells = new boolean[10][10];
 
-    @Override
-    public void initialize(URL url, ResourceBundle rb) {
-        lblPlayer1.setText(LobbyController.playerName);
-        lblTimer.setText("--");
-        lblTurnTimer.setText("--");
-        lblIndication.setText("Coloca tus barcos y presiona 'Listo'");
-        btnToggleEnemyShips.setText("Mostrar barcos");
-        btnToggleEnemyShips.setDisable(true);
-
-        setupDragAndDrop();
-        placeEnemyShipsRandomly();
-    }
+  @Override
+public void initialize(URL url, ResourceBundle rb) {
+    lblPlayer1.setText(LobbyController.playerName);
+    lblTimer.setText("--");
+    lblTurnTimer.setText("--");
+    lblIndication.setText("Coloca tus barcos y presiona 'Listo'");
+    btnToggleEnemyShips.setDisable(true); // Deshabilitar inicialmente
+    
+    setupDragAndDrop();
+    placeEnemyShipsRandomly();
+}
 
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
     }
+    // Añadir este método
+private boolean validateShipPlacement() {
+    int requiredCells = 4 + 3 + 3 + 2 + 2 + 2 + 1 + 1 + 1 + 1;
+    int placedCells = 0;
+
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
+            if (occupiedCells[i][j]) {
+                placedCells++;
+            }
+        }
+    }
+    return placedCells == requiredCells;
+}
+
+private void placeShip(ImageView draggedShip, int col, int row, int shipSize) {
+    markOccupied(row, col, shipSize, true);
+    GridPane.setColumnIndex(draggedShip, col);
+    GridPane.setRowIndex(draggedShip, row);
+    GridPane.setColumnSpan(draggedShip, shipSize);
+    GridPane.setRowSpan(draggedShip, 1);
+
+    if (!gridPanePlayer.getChildren().contains(draggedShip)) {
+        gridPanePlayer.getChildren().add(draggedShip);
+    }
+    
+    // Verificar si todos los barcos están colocados
+    if (validateShipPlacement()) {
+        lblIndication.setText("Todos los barcos colocados. Presiona 'Listo'");
+    }
+}
 
     public void startTimer() {
         if (difficulty == GameDifficulty.MEDIUM) {
