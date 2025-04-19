@@ -56,9 +56,11 @@ public class Board1Controller implements Initializable {
     private Timeline turnTimer;
     private int turnTimeRemaining;
     private boolean[][] occupiedCells = new boolean[10][10];
+    
     private boolean enemyShipsVisible = false;
     private ImageView[] enemyShips;
     private boolean[][] enemyOccupiedCells = new boolean[10][10];
+    
     @FXML
     private ImageView acorazado11;
     @FXML
@@ -143,88 +145,41 @@ private void startTurnTimer() {
     turnTimer.setCycleCount(Timeline.INDEFINITE);
     turnTimer.play();
 }
+
 private void placeEnemyShipsRandomly() {
-    enemyShips = new ImageView[] {
-        acorazado11, crucero11, crucero22,
-        destructor11, destructor22, destructor33,
-        submarino11, submarino22, submarino33, submarino44
-    };
-
     int[] sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-
+    
     for (int i = 0; i < enemyShips.length; i++) {
-        int size = sizes[i];
-        boolean vertical = Math.random() < 0.5;
-
-        ImageView ship = enemyShips[i];
-        ship.setPreserveRatio(true); // las imágenes ya tienen buen tamaño
-
-        if (vertical) {
-            ship.setRotate(90);
-        } else {
-            ship.setRotate(0);
-        }
-
-        placeEnemyShip(ship, size, vertical);
-    }
-
-    updateEnemyShipVisibility();
-}
-private void placeEnemyShip(ImageView ship, int size, boolean vertical) {
-    boolean placed = false;
-
-    while (!placed) {
-        int row = (int) (Math.random() * (vertical ? (11 - size) : 10));
-        int col = (int) (Math.random() * (vertical ? 10 : (11 - size)));
-
-        if (canPlaceEnemyShip(row, col, size, vertical)) {
-            for (int i = 0; i < size; i++) {
-                if (vertical) {
-                    enemyOccupiedCells[row + i][col] = true;
-                } else {
-                    enemyOccupiedCells[row][col + i] = true;
-                }
-            }
-
-            // Coloca la imagen ocupando las celdas que le corresponden
-            gridPaneEnemy.add(ship, col, row,
-                vertical ? 1 : size,
-                vertical ? size : 1
-            );
-
-            placed = true;
-        }
+        placeEnemyShip(enemyShips[i], sizes[i], false); // Solo horizontal
     }
 }
 
 private boolean canPlaceEnemyShip(int row, int col, int size, boolean vertical) {
     for (int i = 0; i < size; i++) {
-        int r = vertical ? row + i : row;
-        int c = vertical ? col : col + i;
-
-        if (r >= 10 || c >= 10 || enemyOccupiedCells[r][c]) {
+        int c = col + i;
+        if (c >= 10 || enemyOccupiedCells[row][c]) {
             return false;
         }
     }
     return true;
 }
 
-@FXML
-private void toggleEnemyShipsVisibility() {
-    enemyShipsVisible = !enemyShipsVisible;
-    updateEnemyShipVisibility();
-
-    btnToggleEnemyShips.setText(enemyShipsVisible ? "Ocultar barcos" : "Mostrar barcos");
-}
-
-private void updateEnemyShipVisibility() {
-    if (enemyShips == null) return;
-
-    for (ImageView ship : enemyShips) {
-        ship.setVisible(enemyShipsVisible);
+// Modificar placeEnemyShip:
+private void placeEnemyShip(ImageView ship, int size, boolean vertical) {
+    boolean placed = false;
+    while (!placed) {
+        int row = (int)(Math.random() * 10);
+        int col = (int)(Math.random() * (11 - size));
+        
+        if (canPlaceEnemyShip(row, col, size, false)) {
+            for (int i = 0; i < size; i++) {
+                enemyOccupiedCells[row][col + i] = true;
+            }
+            gridPaneEnemy.add(ship, col, row, size, 1);
+            placed = true;
+        }
     }
 }
-
 
  private void setupDragAndDrop() {
     setupShipDragEvents(acorazado, 4);
