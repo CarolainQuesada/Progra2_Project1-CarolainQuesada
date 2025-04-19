@@ -146,22 +146,27 @@ private void startTurnTimer() {
     turnTimer.play();
 }
 
-private void placeEnemyShipsRandomly() {
-    int[] sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
-    
-    for (int i = 0; i < enemyShips.length; i++) {
-        placeEnemyShip(enemyShips[i], sizes[i], false); // Solo horizontal
-    }
-}
-
+// Modificar canPlaceEnemyShip:
 private boolean canPlaceEnemyShip(int row, int col, int size, boolean vertical) {
     for (int i = 0; i < size; i++) {
-        int c = col + i;
-        if (c >= 10 || enemyOccupiedCells[row][c]) {
+        int r = vertical ? row + i : row;
+        int c = vertical ? col : col + i;
+        if (r >= 10 || c >= 10 || enemyOccupiedCells[r][c]) {
             return false;
         }
     }
     return true;
+}
+
+// Modificar placeEnemyShipsRandomly:
+private void placeEnemyShipsRandomly() {
+    int[] sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+    
+    for (int i = 0; i < enemyShips.length; i++) {
+        boolean vertical = Math.random() < 0.5;
+        enemyShips[i].setRotate(vertical ? 90 : 0);
+        placeEnemyShip(enemyShips[i], sizes[i], vertical);
+    }
 }
 
 // Modificar placeEnemyShip:
