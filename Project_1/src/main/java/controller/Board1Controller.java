@@ -13,6 +13,7 @@ import javafx.scene.control.Label;
 import model.GameDifficulty;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
@@ -21,83 +22,51 @@ import javafx.scene.image.WritableImage;
 
 public class Board1Controller implements Initializable {
 
-    @FXML 
-    private Label lblTimer;
-    @FXML 
-    private GridPane gridPanePlayer;
-    @FXML 
-    private GridPane gridPaneEnemy;
+    @FXML private Label lblTimer;
+    @FXML private GridPane gridPanePlayer;
+    @FXML private GridPane gridPaneEnemy;
 
-    @FXML 
-    private ImageView acorazado;
-    @FXML 
-    private ImageView crucero1, crucero2;
-    @FXML 
-    private ImageView destructor1, destructor2, destructor3;
-    @FXML 
-    private ImageView submarino1, submarino2, submarino3, submarino4;
-    @FXML
-    private Label lblPlayer1;
-    @FXML
-    private Label lblPlayer2;
-    @FXML
-    private Label lblIndication;
-    @FXML
-    private Label lblTurnTimer;
-    @FXML
-    private Label lblIndication2;
-    @FXML
-    private Button btnToggleEnemyShips;
+    @FXML private ImageView acorazado;
+    @FXML private ImageView crucero1, crucero2;
+    @FXML private ImageView destructor1, destructor2, destructor3;
+    @FXML private ImageView submarino1, submarino2, submarino3, submarino4;
 
-    //variables
+    @FXML private Label lblPlayer1;
+    @FXML private Label lblPlayer2;
+    @FXML private Label lblIndication;
+    @FXML private Label lblTurnTimer;
+    @FXML private Label lblIndication2;
+    @FXML private Button btnToggleEnemyShips;
+    @FXML private Button btnReady;
+
+    @FXML private ImageView acorazado11;
+    @FXML private ImageView crucero11, crucero22;
+    @FXML private ImageView destructor11, destructor22, destructor33;
+    @FXML private ImageView submarino11, submarino22, submarino33, submarino44;
+
     private Timeline timeline;
     private int timeRemaining;
     private static GameDifficulty difficulty;
     private Timeline turnTimer;
     private int turnTimeRemaining;
     private boolean[][] occupiedCells = new boolean[10][10];
+    private boolean[][] enemyOccupiedCells = new boolean[10][10];
+    private boolean shipsPlaced = false;
     private boolean enemyShipsVisible = false;
     private ImageView[] enemyShips;
-    private boolean[][] enemyOccupiedCells = new boolean[10][10];
-    @FXML
-    private ImageView acorazado11;
-    @FXML
-    private ImageView crucero11;
-    @FXML
-    private ImageView submarino11;
-    @FXML
-    private ImageView destructor11;
-    @FXML
-    private ImageView crucero22;
-    @FXML
-    private ImageView destructor22;
-    @FXML
-    private ImageView destructor33;
-    @FXML
-    private ImageView submarino22;
-    @FXML
-    private ImageView submarino33;
-    @FXML
-    private ImageView submarino44;
 
     @Override
-public void initialize(URL url, ResourceBundle rb) {
-    lblPlayer1.setText(LobbyController.playerName); // toma el nombre y lo agrega en el arriba de tablero del jugador 1 
+    public void initialize(URL url, ResourceBundle rb) {
+        lblPlayer1.setText(LobbyController.playerName);
+        lblTimer.setText("--");
+        lblTurnTimer.setText("--");
+        lblIndication.setText("Coloca tus barcos y presiona 'Listo'");
+        btnToggleEnemyShips.setText("Mostrar barcos");
+        btnToggleEnemyShips.setDisable(true);
 
-    if (difficulty == GameDifficulty.EASY) {
-        lblTimer.setText("00");
-        lblIndication.setText("Partida sin tiempo");
-    } else {
-        lblIndication.setText("¡Rápido, el tiempo corre!"); 
-        startTimer();
+        setupDragAndDrop();
+        placeEnemyShipsRandomly();
     }
-
-    setupDragAndDrop();
-    startTurnTimer();
-    placeEnemyShipsRandomly(); // coloca barcos enemigos
-    btnToggleEnemyShips.setText("Mostrar barcos");
-
-}
 
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
@@ -346,6 +315,10 @@ private int getShipSize(ImageView ship) {
     if (ship == submarino1 || ship == submarino2 || ship == submarino3 || ship == submarino4) return 1;
     return 1;
 }
+
+    @FXML
+    private void handleReadyButton(ActionEvent event) {
+    }
 
    
 }

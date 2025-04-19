@@ -294,6 +294,7 @@
                   <Label fx:id="lblTurnTimer" layoutX="386.0" layoutY="441.0" text="20s" />
                   <Label fx:id="lblIndication2" layoutX="362.0" layoutY="423.0" text="Tiempo por tiro" />
                   <Button fx:id="btnToggleEnemyShips" layoutX="668.0" layoutY="428.0" mnemonicParsing="false" onAction="#toggleEnemyShipsVisibility" text="Mostrar Barcos" />
+                  <Button fx:id="btnReady" layoutX="14.0" layoutY="441.0" mnemonicParsing="false" onAction="#handleReadyButton" prefHeight="26.0" prefWidth="63.0" text="Listo" />
                </children>
             </AnchorPane>
          </items>
