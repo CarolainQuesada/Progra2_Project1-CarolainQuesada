@@ -135,26 +135,33 @@ private void handleReadyButton() {
 }
 
 
-    public void startTimer() {
-        if (difficulty == GameDifficulty.MEDIUM) {
-            timeRemaining = 240;
-        } else if (difficulty == GameDifficulty.HARD) {
-            timeRemaining = 180;
-        }
+    private void startTimer() {
+    if (difficulty == GameDifficulty.MEDIUM) {
+        timeRemaining = 240;
+    } else if (difficulty == GameDifficulty.HARD) {
+        timeRemaining = 180;
+    }
 
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+    lblTimer.setText(timeRemaining + "s");
+
+    timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        if (shipsPlaced) {
             timeRemaining--;
             lblTimer.setText(timeRemaining + "s");
             if (timeRemaining <= 0) {
                 timeline.stop();
                 lblTimer.setText("¡Se acabó el tiempo!");
             }
-        }));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
-    }
+        }
+    }));
+    timeline.setCycleCount(Timeline.INDEFINITE);
+    timeline.play();
+}
+
     
 private void startTurnTimer() {
+    if (!shipsPlaced) return;
+
     turnTimeRemaining = 20;
     lblIndication2.setText("Tiempo por tiro");
     lblTurnTimer.setText(turnTimeRemaining + "s");
@@ -164,17 +171,20 @@ private void startTurnTimer() {
     }
 
     turnTimer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-        turnTimeRemaining--;
-        lblTurnTimer.setText(turnTimeRemaining + "s");
-
-        if (turnTimeRemaining <= 0) {
-            turnTimeRemaining = 20; 
+        if (shipsPlaced) {
+            turnTimeRemaining--;
             lblTurnTimer.setText(turnTimeRemaining + "s");
+
+            if (turnTimeRemaining <= 0) {
+                turnTimeRemaining = 20;
+                lblTurnTimer.setText(turnTimeRemaining + "s");
+            }
         }
     }));
     turnTimer.setCycleCount(Timeline.INDEFINITE);
     turnTimer.play();
 }
+
 private void placeEnemyShipsRandomly() {
     enemyShips = new ImageView[] {
         acorazado11, crucero11, crucero22,
