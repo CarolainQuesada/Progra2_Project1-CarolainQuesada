@@ -46,6 +46,8 @@ public class Board1Controller implements Initializable {
     private Label lblTurnTimer;
     @FXML
     private Label lblIndication2;
+    @FXML
+    private Button btnToggleEnemyShips;
 
     //variables
     private Timeline timeline;
@@ -53,12 +55,34 @@ public class Board1Controller implements Initializable {
     private static GameDifficulty difficulty;
     private Timeline turnTimer;
     private int turnTimeRemaining;
-    private boolean[][] occupiedCells = new boolean[10][10]; 
-    
+    private boolean[][] occupiedCells = new boolean[10][10];
+    private boolean enemyShipsVisible = false;
+    private ImageView[] enemyShips;
+    private boolean[][] enemyOccupiedCells = new boolean[10][10];
+    @FXML
+    private ImageView acorazado11;
+    @FXML
+    private ImageView crucero11;
+    @FXML
+    private ImageView submarino11;
+    @FXML
+    private ImageView destructor11;
+    @FXML
+    private ImageView crucero22;
+    @FXML
+    private ImageView destructor22;
+    @FXML
+    private ImageView destructor33;
+    @FXML
+    private ImageView submarino22;
+    @FXML
+    private ImageView submarino33;
+    @FXML
+    private ImageView submarino44;
 
     @Override
 public void initialize(URL url, ResourceBundle rb) {
-    lblPlayer1.setText(LobbyController.playerName); 
+    lblPlayer1.setText(LobbyController.playerName); // toma el nombre y lo agrega en el arriba de tablero del jugador 1 
 
     if (difficulty == GameDifficulty.EASY) {
         lblTimer.setText("00");
@@ -70,6 +94,9 @@ public void initialize(URL url, ResourceBundle rb) {
 
     setupDragAndDrop();
     startTurnTimer();
+    placeEnemyShipsRandomly(); // coloca barcos enemigos
+    btnToggleEnemyShips.setText("Mostrar barcos");
+
 }
 
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
@@ -78,9 +105,9 @@ public void initialize(URL url, ResourceBundle rb) {
 
     public void startTimer() {
         if (difficulty == GameDifficulty.MEDIUM) {
-            timeRemaining = 120;
+            timeRemaining = 240;
         } else if (difficulty == GameDifficulty.HARD) {
-            timeRemaining = 60;
+            timeRemaining = 180;
         }
 
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -96,7 +123,7 @@ public void initialize(URL url, ResourceBundle rb) {
     }
     
 private void startTurnTimer() {
-    turnTimeRemaining = 15;
+    turnTimeRemaining = 20;
     lblIndication2.setText("Tiempo por tiro");
     lblTurnTimer.setText(turnTimeRemaining + "s");
 
@@ -109,13 +136,96 @@ private void startTurnTimer() {
         lblTurnTimer.setText(turnTimeRemaining + "s");
 
         if (turnTimeRemaining <= 0) {
-            turnTimeRemaining = 15; 
+            turnTimeRemaining = 20; 
             lblTurnTimer.setText(turnTimeRemaining + "s");
         }
     }));
     turnTimer.setCycleCount(Timeline.INDEFINITE);
     turnTimer.play();
 }
+private void placeEnemyShipsRandomly() {
+    enemyShips = new ImageView[] {
+        acorazado11, crucero11, crucero22,
+        destructor11, destructor22, destructor33,
+        submarino11, submarino22, submarino33, submarino44
+    };
+
+    int[] sizes = {4, 3, 3, 2, 2, 2, 1, 1, 1, 1};
+
+    for (int i = 0; i < enemyShips.length; i++) {
+        int size = sizes[i];
+        boolean vertical = Math.random() < 0.5;
+
+        ImageView ship = enemyShips[i];
+        ship.setPreserveRatio(true); // las imágenes ya tienen buen tamaño
+
+        if (vertical) {
+            ship.setRotate(90);
+        } else {
+            ship.setRotate(0);
+        }
+
+        placeEnemyShip(ship, size, vertical);
+    }
+
+    updateEnemyShipVisibility();
+}
+private void placeEnemyShip(ImageView ship, int size, boolean vertical) {
+    boolean placed = false;
+
+    while (!placed) {
+        int row = (int) (Math.random() * (vertical ? (11 - size) : 10));
+        int col = (int) (Math.random() * (vertical ? 10 : (11 - size)));
+
+        if (canPlaceEnemyShip(row, col, size, vertical)) {
+            for (int i = 0; i < size; i++) {
+                if (vertical) {
+                    enemyOccupiedCells[row + i][col] = true;
+                } else {
+                    enemyOccupiedCells[row][col + i] = true;
+                }
+            }
+
+            // Coloca la imagen ocupando las celdas que le corresponden
+            gridPaneEnemy.add(ship, col, row,
+                vertical ? 1 : size,
+                vertical ? size : 1
+            );
+
+            placed = true;
+        }
+    }
+}
+
+private boolean canPlaceEnemyShip(int row, int col, int size, boolean vertical) {
+    for (int i = 0; i < size; i++) {
+        int r = vertical ? row + i : row;
+        int c = vertical ? col : col + i;
+
+        if (r >= 10 || c >= 10 || enemyOccupiedCells[r][c]) {
+            return false;
+        }
+    }
+    return true;
+}
+
+@FXML
+private void toggleEnemyShipsVisibility() {
+    enemyShipsVisible = !enemyShipsVisible;
+    updateEnemyShipVisibility();
+
+    btnToggleEnemyShips.setText(enemyShipsVisible ? "Ocultar barcos" : "Mostrar barcos");
+}
+
+private void updateEnemyShipVisibility() {
+    if (enemyShips == null) return;
+
+    for (ImageView ship : enemyShips) {
+        ship.setVisible(enemyShipsVisible);
+    }
+}
+
+
  private void setupDragAndDrop() {
     setupShipDragEvents(acorazado, 4);
     setupShipDragEvents(crucero1, 3);
@@ -128,10 +238,7 @@ private void startTurnTimer() {
     setupShipDragEvents(submarino3, 1);
     setupShipDragEvents(submarino4, 1);
 
-    // Configura el evento de (arrastrar sobre) el tablero
     gridPanePlayer.setOnDragOver(event -> handleDragOver(event));
-
-    // Configura el evento de (soltar) sobre el tablero
     gridPanePlayer.setOnDragDropped(event -> handleDragDropped(event));
 }
 
