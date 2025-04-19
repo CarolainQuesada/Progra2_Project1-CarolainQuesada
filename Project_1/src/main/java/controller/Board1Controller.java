@@ -84,6 +84,8 @@ public class Board1Controller implements Initializable {
     private boolean enemyShipsVisible = false;
     private ImageView[] enemyShips;
     private boolean[][] enemyOccupiedCells = new boolean[10][10];
+    private boolean shipsPlaced = false;
+
 
   @Override
 public void initialize(URL url, ResourceBundle rb) {
@@ -100,8 +102,25 @@ public void initialize(URL url, ResourceBundle rb) {
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
     }
-    // Añadir este método
-private boolean validateShipPlacement() {
+    
+    @FXML
+private void handleReadyButton() {
+    if (validateShipPlacement()) {
+        shipsPlaced = true;
+        btnReady.setDisable(true);
+        btnToggleEnemyShips.setDisable(false);
+        lblIndication.setText("¡Que comience el juego!");
+
+        if (difficulty != GameDifficulty.EASY) {
+            startTimer();
+        }
+        startTurnTimer();
+    } else {
+        lblIndication.setText("¡Debes colocar todos tus barcos primero!");
+    }
+}
+
+    private boolean validateShipPlacement() {
     int requiredCells = 4 + 3 + 3 + 2 + 2 + 2 + 1 + 1 + 1 + 1;
     int placedCells = 0;
 
@@ -115,22 +134,6 @@ private boolean validateShipPlacement() {
     return placedCells == requiredCells;
 }
 
-private void placeShip(ImageView draggedShip, int col, int row, int shipSize) {
-    markOccupied(row, col, shipSize, true);
-    GridPane.setColumnIndex(draggedShip, col);
-    GridPane.setRowIndex(draggedShip, row);
-    GridPane.setColumnSpan(draggedShip, shipSize);
-    GridPane.setRowSpan(draggedShip, 1);
-
-    if (!gridPanePlayer.getChildren().contains(draggedShip)) {
-        gridPanePlayer.getChildren().add(draggedShip);
-    }
-    
-    // Verificar si todos los barcos están colocados
-    if (validateShipPlacement()) {
-        lblIndication.setText("Todos los barcos colocados. Presiona 'Listo'");
-    }
-}
 
     public void startTimer() {
         if (difficulty == GameDifficulty.MEDIUM) {
@@ -376,9 +379,4 @@ private int getShipSize(ImageView ship) {
     return 1;
 }
 
-    @FXML
-    private void handleReadyButton(ActionEvent event) {
-    }
-
-   
 }
