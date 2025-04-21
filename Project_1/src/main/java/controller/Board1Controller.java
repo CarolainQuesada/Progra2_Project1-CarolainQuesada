@@ -49,24 +49,60 @@ public class Board1Controller implements Initializable {
     private static GameDifficulty difficulty;
     private Timeline turnTimer;
     private int turnTimeRemaining;
+    //
     private boolean[][] occupiedCells = new boolean[10][10];
     private boolean[][] enemyOccupiedCells = new boolean[10][10];
     private boolean shipsPlaced = false;
     private boolean enemyShipsVisible = false;
     private ImageView[] enemyShips;
+    //
+    private boolean playerTurn = true;
+    private boolean[][] playerOccupiedCells = new boolean[10][10];
+    private Button[][] playerCells = new Button[10][10];
+    private Button[][] enemyCells = new Button[10][10];
+
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         lblPlayer1.setText(LobbyController.playerName);
         lblTimer.setText("--");
         lblTurnTimer.setText("--");
-        lblIndication.setText("Coloca tus barcos y presiona 'Listo'");
+        lblIndication.setText("Coloca los barcos y presiona Listo ");
         btnToggleEnemyShips.setText("Mostrar barcos");
         btnToggleEnemyShips.setDisable(true);
 
         setupDragAndDrop();
         placeEnemyShipsRandomly();
+        initializeShootingLogic();
     }
+
+    private void initializeShootingLogic() {
+    for (int row = 0; row < 10; row++) {
+        for (int col = 0; col < 10; col++) {
+            Button cell = new Button();
+            cell.setPrefSize(40, 40);
+
+            int finalRow = row;
+            int finalCol = col;
+
+            cell.setOnAction(event -> {
+                // Evita disparar en la misma celda dos veces
+                if (cell.getStyle().contains("-fx-background-color")) return;
+
+                if (enemyOccupiedCells[finalRow][finalCol]) {
+                    cell.setStyle("-fx-background-color: red");
+                    lblIndication2.setText("¡Impacto! Dispara de nuevo.");
+                } else {
+                    cell.setStyle("-fx-background-color: blue");
+                    lblIndication2.setText("¡Fallaste! Turno del oponente.");
+                    // Aquí podrías agregar lógica para pasar turno si lo deseas
+                }
+            });
+
+            gridPaneEnemy.add(cell, col, row);
+        }
+    }
+}
 
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
@@ -78,7 +114,7 @@ public class Board1Controller implements Initializable {
             shipsPlaced = true;
             btnReady.setDisable(true);
             btnToggleEnemyShips.setDisable(false);
-            lblIndication.setText("¡Que comience el juego!");
+            lblIndication.setText("Partida sin timepo límite");
 
             if (difficulty != GameDifficulty.EASY) {
                 startTimer();
