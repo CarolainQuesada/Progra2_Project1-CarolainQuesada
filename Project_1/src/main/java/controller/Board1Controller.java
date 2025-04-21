@@ -76,7 +76,7 @@ public class Board1Controller implements Initializable {
         initializeShootingLogic();
     }
 
-    private void initializeShootingLogic() {
+  private void initializeShootingLogic() {
     for (int row = 0; row < 10; row++) {
         for (int col = 0; col < 10; col++) {
             Button cell = new Button();
@@ -86,7 +86,7 @@ public class Board1Controller implements Initializable {
             int finalCol = col;
 
             cell.setOnAction(event -> {
-                // Evita disparar en la misma celda dos veces
+                if (!playerTurn) return; 
                 if (cell.getStyle().contains("-fx-background-color")) return;
 
                 if (enemyOccupiedCells[finalRow][finalCol]) {
@@ -94,15 +94,30 @@ public class Board1Controller implements Initializable {
                     lblIndication2.setText("¡Impacto! Dispara de nuevo.");
                 } else {
                     cell.setStyle("-fx-background-color: blue");
-                    lblIndication2.setText("¡Fallaste! Turno del oponente.");
-                    // Aquí podrías agregar lógica para pasar turno si lo deseas
+                    lblIndication2.setText("¡Fallaste! Turno de la computadora.");
+                    playerTurn = false;
+                    startTurnTimer(); 
+                    computerTurn(); 
                 }
             });
 
+            enemyCells[row][col] = cell;
             gridPaneEnemy.add(cell, col, row);
         }
     }
+
+    for (int row = 0; row < 10; row++) {
+        for (int col = 0; col < 10; col++) {
+            Button cell = new Button();
+            cell.setPrefSize(40, 40);
+            playerCells[row][col] = cell;
+            gridPanePlayer.add(cell, col, row);
+        }
+    }
 }
+  private void computerTurn() {
+  }
+
 
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
