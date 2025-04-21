@@ -212,16 +212,24 @@ public class Board1Controller implements Initializable {
         }
 
         turnTimer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            if (shipsPlaced) {
-                turnTimeRemaining--;
-                lblTurnTimer.setText(turnTimeRemaining + "s");
+    if (!shipsPlaced) return;
 
-                if (turnTimeRemaining <= 0) {
-                    turnTimeRemaining = 20;
-                    lblTurnTimer.setText(turnTimeRemaining + "s");
-                }
-            }
-        }));
+    turnTimeRemaining--;
+    lblTurnTimer.setText(turnTimeRemaining + "s");
+
+    if (turnTimeRemaining <= 0) {
+        if (playerTurn) {
+            lblIndication2.setText("¡Tiempo agotado! Turno de la computadora.");
+            playerTurn = false;
+            computerTurn();
+        } else {
+            lblIndication2.setText("¡La computadora se demoró! Tu turno.");
+            playerTurn = true;
+        }
+        startTurnTimer();
+    }
+}));
+
         turnTimer.setCycleCount(Timeline.INDEFINITE);
         turnTimer.play();
     }
