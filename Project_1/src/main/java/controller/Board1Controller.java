@@ -115,9 +115,32 @@ public class Board1Controller implements Initializable {
         }
     }
 }
-  private void computerTurn() {
-  }
+      private void computerTurn() {
+    Timeline computerTimeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        if (playerTurn) return; // Si ya cambió el turno, cancela
 
+        int row, col;
+        do {
+            row = (int)(Math.random() * 10);
+            col = (int)(Math.random() * 10);
+        } while (playerCells[row][col].getStyle().contains("-fx-background-color"));
+
+        Button cell = playerCells[row][col];
+
+        if (occupiedCells[row][col]) {
+            cell.setStyle("-fx-background-color: red");
+            lblIndication2.setText("¡La computadora acertó y sigue!");
+            computerTurn(); // Sigue jugando si acierta
+        } else {
+            cell.setStyle("-fx-background-color: blue");
+            lblIndication2.setText("¡La computadora falló! Tu turno.");
+            playerTurn = true;
+            startTurnTimer();
+        }
+    }));
+    computerTimeline.setCycleCount(1);
+    computerTimeline.play();
+}
 
     public static void setDifficulty(GameDifficulty selectedDifficulty) {
         difficulty = selectedDifficulty;
